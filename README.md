@@ -168,7 +168,11 @@ El agente tiene acceso a las siguientes herramientas especializadas en servicios
 
     - Asegúrate de tener el proyecto de Google Cloud **catastrai-deval**.
     - Asegúrate de tener la API de Vertex AI habilitada en tu proyecto.
-    - Configura las variables de entorno. Ya están preconfiguradas en el archivo `.env`. Alternativamente puedes editar [customer_service/config.py](./customer_service/config.py)
+    - **Copia el archivo de configuración:**
+    ```bash
+    cp .env.example .env
+    ```
+    - Edita el archivo `.env` con tu API key real. Alternativamente puedes editar [customer_service/config.py](./customer_service/config.py)
 
     **Opción A: Vertex AI (Recomendado para producción)**
     ```bash
