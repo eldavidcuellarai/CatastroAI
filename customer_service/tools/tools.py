@@ -18,6 +18,18 @@ import logging
 import uuid
 from datetime import datetime, timedelta
 from google.adk.tools import ToolContext
+import os
+import json
+import mimetypes
+from typing import Any, Literal
+
+import vertexai
+from vertexai.generative_models import (
+    GenerativeModel,
+    Part,
+    GenerationConfig,
+)
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +52,102 @@ def send_call_companion_link(phone_number: str) -> str:
     logger.info("Sending call companion link to %s", phone_number)
 
     return {"status": "success", "message": f"Link sent to {phone_number}"}
+
+
+def _build_image_part(image_uri: str) -> Part:
+    """Constructs a Vertex AI Part for an image from GCS/HTTP/local path.
+
+    Args:
+        image_uri: A path or URI. Supports `gs://`, `http(s)://`, or local file path.
+
+    Returns:
+        Part: Vertex AI generative Part with the image data.
+    """
+    default_mime = "image/jpeg"
+    if image_uri.startswith("gs://") or image_uri.startswith("http://") or image_uri.startswith("https://"):
+        mime, _ = mimetypes.guess_type(image_uri)
+        return Part.from_uri(uri=image_uri, mime_type=mime or default_mime)
+
+    # Local file path
+    mime, _ = mimetypes.guess_type(image_uri)
+    with open(image_uri, "rb") as f:
+        data = f.read()
+    return Part.from_data(data=data, mime_type=mime or default_mime)
+
+
+def analyze_cadastral_image(
+    image_uri: str,
+    analysis_goal: str = "extraer_parcelas_y_texto",
+    output_mode: Literal["features", "summary", "ocr"] = "features",
+    language: str = "es",
+) -> dict:
+    """Analiza una imagen catastral con Gemini y devuelve resultados en JSON.
+
+    Args:
+        image_uri: Ruta o URI de la imagen. Soporta `gs://`, `http(s)://` o ruta local.
+        analysis_goal: Objetivo específico del análisis (p.ej. "extraer_parcelas_y_texto").
+        output_mode: "features" (detalles estructurados), "summary" (resumen), "ocr" (texto).
+        language: Idioma preferido para campos textuales.
+
+    Returns:
+        dict: Resultado estructurado del análisis. Si el modelo no devuelve JSON válido,
+              se devuelve `{"raw": "..."}` con el texto crudo.
+
+    Ejemplo:
+        >>> analyze_cadastral_image(
+        ...     image_uri="gs://bucket/imagenes/parcelas/lote123.png",
+        ...     analysis_goal="extraer_parcelas_y_texto",
+        ...     output_mode="features",
+        ... )
+        {"parcel_id": "123", "detected_labels": ["lote", "coordenadas"], ...}
+    """
+    logger.info("Analyzing cadastral image via Gemini: %s", image_uri)
+
+    configs = Config()
+    # Inicializa Vertex AI para asegurar proyecto/ubicación al usar Gemini dentro de la herramienta
+    vertexai.init(project=configs.CLOUD_PROJECT, location=configs.CLOUD_LOCATION)
+
+    model_name = configs.agent_settings.model or "gemini-2.5-flash"
+    model = GenerativeModel(model_name)
+
+    img_part = _build_image_part(image_uri)
+
+    # Prompt enfocado a JSON estricto
+    prompt = (
+        "Eres un asistente experto en catastro. Analiza la imagen proporcionada y "
+        "devuelve únicamente un JSON válido y estricto (sin texto adicional) con este esquema aproximado: "
+        "{\n"
+        "  \"parcel_id\": string|null,\n"
+        "  \"detected_labels\": [string],\n"
+        "  \"ocr_text\": string,\n"
+        "  \"features\": {\n"
+        "    \"boundaries_present\": boolean,\n"
+        "    \"measurement_units\": string|null,\n"
+        "    \"area_estimate\": number|null,\n"
+        "    \"coordinates_present\": boolean\n"
+        "  },\n"
+        "  \"confidence\": number\n"
+        "}\n"
+        f"Objetivo del análisis: {analysis_goal}. "
+        f"Modo de salida: {output_mode}. "
+        f"Idioma preferido: {language}. "
+        "Si no puedes inferir algún campo, usa null o valores por defecto apropiados."
+    )
+
+    generation_config = GenerationConfig(
+        temperature=0.1,
+        top_p=0.9,
+        response_mime_type="application/json",
+    )
+
+    response = model.generate_content([img_part, prompt], generation_config=generation_config)
+
+    text = response.text or ""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        # Si el modelo devolvió algo que no es JSON válido, retornamos crudo
+        return {"raw": text}
 
 
 def approve_discount(discount_type: str, value: float, reason: str) -> str:

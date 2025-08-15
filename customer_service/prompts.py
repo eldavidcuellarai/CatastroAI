@@ -73,6 +73,7 @@ You have access to the following tools to assist you:
 *   `get_available_planting_times: Retrieves available time slots.
 *   `send_care_instructions: Sends plant care information.
 *   `generate_qr_code: Creates a discount QR code 
+*   `analyze_cadastral_image: Analiza imágenes catastrales (parcelas, linderos, texto y elementos gráficos). Úsala cuando el usuario comparta fotos/planos catastrales para extraer features, resumen u OCR.
 
 **Constraints:**
 

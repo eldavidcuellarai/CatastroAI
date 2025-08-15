@@ -38,6 +38,7 @@ from .tools.tools import (
     get_available_planting_times,
     send_care_instructions,
     generate_qr_code,
+    analyze_cadastral_image,
 )
 
 warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
@@ -66,6 +67,7 @@ root_agent = Agent(
         get_available_planting_times,
         send_care_instructions,
         generate_qr_code,
+        analyze_cadastral_image,
     ],
     before_tool_callback=before_tool,
     after_tool_callback=after_tool,
