@@ -42,12 +42,56 @@ Las características principales del Agente CatastroAI incluyen:
 
 ![Flujo de Trabajo del Agente CatastroAI](customer_service_workflow.png)
 
-El agente está construido usando una **arquitectura híbrida multimodal avanzada**, combinando entradas de texto, imágenes y documentos para proporcionar una experiencia rica e interactiva con doble validación. 
+CatastroAI implementa una **arquitectura híbrida multimodal** que combina lo mejor de **Vertex AI** y **Google AI Studio** a través del **Agent Development Kit (ADK)** de Google. El sistema actúa como un **asistente especializado que nunca duerme**, con dos "cerebros" que trabajan en equipo para garantizar máxima precisión.
 
-**🧠 Flujo de Procesamiento Híbrido:**
-1. **Gemini 2.5 Flash** (Motor Principal): Maneja conversaciones, análisis inicial y coordinación general
-2. **Document AI Preentrenado** (Segundo Revisor): Valida y verifica documentos catastrales específicos
-3. **Validación Cruzada**: Ambos modelos confirman resultados críticos antes de presentar al usuario
+#### 🧠 Los Dos Cerebros del Sistema
+
+1. **🚀 Gemini 2.5 Flash (Motor Principal)**
+   - **Función**: Conversación inteligente, razonamiento y coordinación general
+   - **Capacidades**: Comprende texto, imágenes y contexto complejo
+   - **Uso**: Interpreta necesidades, toma decisiones y genera respuestas naturales
+
+2. **📄 Document AI (Segundo Revisor Especializado)**
+   - **Función**: Lectura precisa de documentos oficiales
+   - **Capacidades**: OCR avanzado, extracción de datos estructurados
+   - **Uso**: Valida escrituras, planos y documentos catastrales con precisión legal
+
+#### ⚡ Cómo Funciona en la Práctica
+
+```
+📄 Usuario sube documento → 🔍 Document AI extrae datos → 🧠 Gemini interpreta y razona → 
+📋 Sistema genera checklist y recomendaciones → ✅ Usuario recibe próximos pasos claros
+```
+
+#### 🔄 Configuración Dual de APIs
+
+**Para Desarrollo Rápido:**
+- **Google AI Studio**: Configuración simple con API Key
+- **Ideal para**: Prototipado y pruebas iniciales
+
+**Para Producción Empresarial:**
+- **Vertex AI**: Configuración robusta con Service Accounts
+- **Ideal para**: Despliegue escalable y seguro
+
+#### 🚀 Auto Deployment con ADK
+
+El **Agent Development Kit** permite deployment automático:
+1. **📦 Build**: `poetry build` crea el paquete
+2. **☁️ Upload**: Se sube automáticamente a Google Cloud
+3. **🚀 Deploy**: Agent Engine despliega en modo serverless
+4. **✅ Test**: Verificación automática del funcionamiento
+
+**Resultado**: Tu agente queda disponible 24/7 en internet, escalable y listo para producción.
+
+#### 📊 Ventajas de esta Arquitectura
+
+- **⚡ Velocidad**: De días a minutos en trámites catastrales
+- **🎯 Precisión**: Doble validación elimina errores críticos  
+- **📈 Escalabilidad**: Maneja automáticamente picos de demanda
+- **🔒 Seguridad**: Autenticación empresarial con Service Accounts
+- **💰 Optimización**: Usa la API más eficiente según el contexto
+
+> 📚 **Para detalles técnicos completos**, consulta [README-ARCHITECTURE.md](./README-ARCHITECTURE.md)
 
 Simula interacciones con diversas herramientas y servicios especializados en catastro, incluyendo análisis de propiedades, gestión de documentos, procesamiento de valuaciones y sistemas de consultas técnicas. El agente también utiliza un sistema de gestión de sesiones para mantener contexto entre interacciones y personalizar la experiencia del usuario.
 
@@ -337,7 +381,12 @@ Puedes encontrar parámetros adicionales de configuración en [customer_service/
 - **Modelo**: gemini-2.5-flash
 - **Modo**: Vertex AI (Producción) / AI Studio (Desarrollo)
 
-Consulta [CLAUDE.md](./CLAUDE.md) para comandos específicos y configuración detallada.
+### 📚 Documentación Adicional
+
+- **[README-ARCHITECTURE.md](./README-ARCHITECTURE.md)** - Arquitectura técnica completa y diagramas detallados
+- **[README-DEVS.md](./README-DEVS.md)** - Guía específica para AI Engineers con código y configuraciones
+- **[CLAUDE.md](./CLAUDE.md)** - Comandos específicos y configuración detallada para desarrollo
+- **[flujo.md](./flujo.md)** - Flujo integrado Gemini + Document AI con ejemplos de código
 
 ## 🚀 Despliegue en Google Agent Engine
 
