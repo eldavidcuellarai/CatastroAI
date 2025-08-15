@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "customer-service"
+name = "catastro-ai"
 version = "0.1.0"
-description = "customer service demo using Agent Development Kit"
-authors = ["Christos Aniftos <aniftos@google.com>"]
+description = "CatastroAI: Agente híbrido especializado en servicios catastrales con doble validación (Gemini 2.5 Flash + Document AI)"
+authors = ["CatastroAI Team"]
 license = "Apache License 2.0"
 readme = "README.md"
 

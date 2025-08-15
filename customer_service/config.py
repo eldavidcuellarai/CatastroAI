@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Configuration module for the customer service agent."""
+"""Configuration module for the CatastroAI agent with hybrid AI architecture."""
 
 import os
 import logging
@@ -24,14 +24,16 @@ logger = logging.getLogger(__name__)
 
 
 class AgentModel(BaseModel):
-    """Agent model settings."""
+    """CatastroAI agent model settings with hybrid architecture."""
 
-    name: str = Field(default="customer_service_agent")
+    name: str = Field(default="catastro_ai_agent")
     model: str = Field(default="gemini-2.5-flash")
+    secondary_model: str = Field(default="document-ai-specialist")
+    description: str = Field(default="Agente híbrido para servicios catastrales con doble validación")
 
 
 class Config(BaseSettings):
-    """Configuration settings for the customer service agent."""
+    """Configuration settings for the CatastroAI agent with hybrid validation."""
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(
@@ -41,7 +43,7 @@ class Config(BaseSettings):
         case_sensitive=True,
     )
     agent_settings: AgentModel = Field(default=AgentModel())
-    app_name: str = "customer_service_app"
+    app_name: str = "catastro_ai_app"
     CLOUD_PROJECT: str = Field(default="catastrai-deval")
     CLOUD_LOCATION: str = Field(default="us-central1")
     GENAI_USE_VERTEXAI: str = Field(default="1")

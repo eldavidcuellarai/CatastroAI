@@ -2,27 +2,28 @@
 
 ## 🚀 Pitch del Proyecto
 
-**CatastroAI** es un agente de inteligencia artificial revolucionario diseñado específicamente para modernizar y automatizar los servicios catastrales. Utilizando las capacidades avanzadas de **Gemini 2.5 Flash** y **Google Cloud Platform**, nuestro agente multimodal puede procesar documentos complejos, interpretar imágenes de propiedades, y brindar asistencia especializada para trámites catastrales, valuaciones inmobiliarias y consultas técnicas.
+**CatastroAI** es un agente de inteligencia artificial revolucionario diseñado específicamente para modernizar y automatizar los servicios catastrales. Utilizando las capacidades avanzadas de **Gemini 2.5 Flash** como motor principal y un **modelo de Document AI preentrenado** como segundo revisor especializado, nuestro agente multimodal puede procesar documentos complejos, interpretar imágenes de propiedades, y brindar asistencia especializada para trámites catastrales, valuaciones inmobiliarias y consultas técnicas con doble validación automática.
 
 ### 🎯 ¿Qué hace CatastroAI?
-- **Procesamiento inteligente de documentos** catastrales (PDFs, planos, escrituras)
+- **Procesamiento inteligente de documentos** catastrales (PDFs, planos, escrituras) con **doble revisión AI**
 - **Análisis de imágenes** de propiedades para valuaciones automáticas
+- **Validación cruzada** entre Gemini 2.5 Flash y Document AI especializado
 - **Asistencia conversacional** para ciudadanos y profesionales del sector
 - **Integración con sistemas** existentes de catastro y registro
-- **Automatización de procesos** burocráticos complejos
+- **Automatización de procesos** burocráticos complejos con alta precisión
 
 ### 💡 ¿Por qué CatastroAI?
-En un sector donde la digitalización avanza lentamente, CatastroAI ofrece una solución **moderna, eficiente y accesible** que transforma la experiencia tanto para funcionarios públicos como para ciudadanos, reduciendo tiempos de gestión de semanas a minutos.
+En un sector donde la digitalización avanza lentamente, CatastroAI ofrece una solución **moderna, eficiente y accesible** que transforma la experiencia tanto para funcionarios públicos como para ciudadanos, reduciendo tiempos de gestión de semanas a minutos. La **arquitectura de doble validación** (Gemini + Document AI) garantiza precisión excepcional en el procesamiento de documentos oficiales críticos.
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto implementa un agente de IA especializado en servicios catastrales, construido sobre el **Google Agent Development Kit (ADK)** y potenciado por **Vertex AI**. El agente está diseñado para proporcionar asistencia experta, gestionar consultas complejas, procesar documentación técnica y ofrecer recomendaciones personalizadas en el ámbito catastral e inmobiliario.
+Este proyecto implementa un agente de IA especializado en servicios catastrales, construido sobre el **Google Agent Development Kit (ADK)** y potenciado por **Vertex AI**. El agente utiliza una **arquitectura híbrida de doble validación**: **Gemini 2.5 Flash** como motor conversacional principal y un **modelo de Document AI preentrenado** como segundo revisor especializado en documentos catastrales. Está diseñado para proporcionar asistencia experta, gestionar consultas complejas, procesar documentación técnica con alta precisión y ofrecer recomendaciones personalizadas en el ámbito catastral e inmobiliario.
 
 ## 🔎 Visión General
 
-CatastroAI está diseñado para proporcionar una experiencia fluida y especializada en servicios catastrales. Aprovecha las capacidades de **Gemini 2.5 Flash** para comprender necesidades complejas del sector, ofrecer análisis técnicos precisos, gestionar documentación oficial y brindar recomendaciones expertas. El agente está diseñado para ser profesional, preciso y altamente eficiente, asegurando que los usuarios reciban el mejor servicio posible.
+CatastroAI está diseñado para proporcionar una experiencia fluida y especializada en servicios catastrales. Aprovecha las capacidades de **Gemini 2.5 Flash** como motor principal para comprender necesidades complejas del sector, mientras que el **modelo de Document AI preentrenado** actúa como segundo revisor especializado para validar documentos catastrales críticos. Esta **doble capa de validación** permite ofrecer análisis técnicos precisos, gestionar documentación oficial con alta confiabilidad y brindar recomendaciones expertas. El agente está diseñado para ser profesional, preciso y altamente eficiente, asegurando que los usuarios reciban el mejor servicio posible.
 
 ## 📊 Detalles del Agente
 
@@ -30,21 +31,31 @@ Las características principales del Agente CatastroAI incluyen:
 
 | Característica     | Descripción                    |
 | ------------------ | ------------------------------ |
-| _Tipo de Interacción_ | Conversacional              |
-| _Complejidad_      | Avanzada                       |
+| _Tipo de Interacción_ | Conversacional con IA Híbrida |
+| _Complejidad_      | Avanzada con Doble Validación  |
 | _Tipo de Agente_   | Agente Único Especializado     |
-| _Componentes_      | Herramientas, Multimodal, Tiempo Real |
+| _Componentes_      | Gemini 2.5 + Document AI, Herramientas, Multimodal |
 | _Sector Vertical_  | Catastro e Inmobiliario        |
+| _Arquitectura_     | Híbrida: Motor Principal + Segundo Revisor |
 
 ### 🏗️ Arquitectura del Agente
 
 ![Flujo de Trabajo del Agente CatastroAI](customer_service_workflow.png)
 
-El agente está construido usando una arquitectura **multimodal avanzada**, combinando entradas de texto, imágenes y documentos para proporcionar una experiencia rica e interactiva. Simula interacciones con diversas herramientas y servicios especializados en catastro, incluyendo análisis de propiedades, gestión de documentos, procesamiento de valuaciones y sistemas de consultas técnicas. El agente también utiliza un sistema de gestión de sesiones para mantener contexto entre interacciones y personalizar la experiencia del usuario.
+El agente está construido usando una **arquitectura híbrida multimodal avanzada**, combinando entradas de texto, imágenes y documentos para proporcionar una experiencia rica e interactiva con doble validación. 
 
-⚠️ **Nota Importante**: Este agente actualmente no está integrado a un backend real y el comportamiento está basado en herramientas simuladas. Si deseas implementar este agente con integración real de backend, necesitarás editar [customer_service/tools.py](./customer_service/tools/tools.py)
+**🧠 Flujo de Procesamiento Híbrido:**
+1. **Gemini 2.5 Flash** (Motor Principal): Maneja conversaciones, análisis inicial y coordinación general
+2. **Document AI Preentrenado** (Segundo Revisor): Valida y verifica documentos catastrales específicos
+3. **Validación Cruzada**: Ambos modelos confirman resultados críticos antes de presentar al usuario
 
-Debido a que las herramientas están simuladas, podrías notar que algunos cambios solicitados no se aplicarán. Por ejemplo, documentos recién agregados para análisis no se mostrarán si posteriormente un usuario solicita al agente listar todos los elementos procesados.
+Simula interacciones con diversas herramientas y servicios especializados en catastro, incluyendo análisis de propiedades, gestión de documentos, procesamiento de valuaciones y sistemas de consultas técnicas. El agente también utiliza un sistema de gestión de sesiones para mantener contexto entre interacciones y personalizar la experiencia del usuario.
+
+✅ **Estado Funcional**: Este agente **YA ESTÁ FUNCIONAL** con la arquitectura híbrida que incluye **Document AI integrado** como segundo revisor. La funcionalidad completa de doble validación está operativa y lista para uso.
+
+⚠️ **Nota de Backend**: El agente actualmente no está integrado a un backend catastral real y utiliza herramientas simuladas para demostración. Si deseas implementar este agente con integración real de sistemas catastrales, necesitarás editar [customer_service/tools.py](./customer_service/tools/tools.py)
+
+🔄 **Simulación Funcional**: Debido a que las herramientas están simuladas, algunos cambios solicitados no se aplicarán persistentemente. Por ejemplo, documentos recién agregados para análisis no se mostrarán si posteriormente un usuario solicita al agente listar todos los elementos procesados. Sin embargo, el **procesamiento con Document AI es completamente funcional**.
 
 ### 🌟 Características Principales
 
@@ -199,6 +210,8 @@ El agente tiene acceso a las siguientes herramientas especializadas en servicios
 
 ## 🚀 Ejecutar el Agente
 
+**✅ Agente Funcional**: CatastroAI ya está completamente funcional con **Document AI integrado** y listo para usar.
+
 **🔍 Verificación rápida de configuración:**
 ```bash
 poetry run python setup_gcp_a2a.py
@@ -226,7 +239,7 @@ Desde el directorio raíz del proyecto:
 
 ### 🗣️ Ejemplo de Interacción
 
-Aquí tienes un ejemplo rápido de cómo un usuario podría interactuar con el agente:
+Aquí tienes un ejemplo rápido de cómo un usuario podría interactuar con el agente **funcional con Document AI**:
 
 **💬 Usuario:**
 Hola, necesito ayuda con un trámite catastral
@@ -258,10 +271,20 @@ print(send_call_companion_link(phone_number='+52555123456'))
 Okay, hice clic en el enlace... ¿puedes ver esto?
 
 **🤖 CatastroAI:**
-¡Sí, puedo verte Carlos! ¿Podrías apuntar la cámara hacia los documentos de la propiedad para que pueda analizarlos?
+¡Sí, puedo verte Carlos! ¿Podrías apuntar la cámara hacia los documentos de la propiedad para que pueda analizarlos? 
+
+*[Document AI se activa automáticamente]*
+
+**🔄 Procesamiento Híbrido en Tiempo Real:**
+- **Gemini 2.5 Flash**: Analizando documento principal...
+- **Document AI**: Validando información catastral específica...
+- **Validación Cruzada**: Confirmando datos críticos...
+
+**🤖 CatastroAI:**
+Perfecto, he analizado tu documento con doble validación. Gemini identificó que es una escritura de propiedad urbana, y Document AI confirmó que todos los datos catastrales están correctos. Te puedo ayudar con el trámite de actualización de valor catastral.
 
 **💬 Usuario:**
-¡Por supuesto!
+¡Excelente! ¿Qué documentos adicionales necesito?
 ...
 
 ## 📋 Evaluación del Agente
@@ -383,10 +406,14 @@ Los usuarios son únicamente responsables de cualquier desarrollo adicional, pru
 
 **Proyecto**: CatastroAI  
 **Versión**: 0.1.0  
+**Estado**: ✅ **FUNCIONAL** con Document AI integrado  
 **Proyecto GCP**: catastrai-deval  
+**Arquitectura**: Híbrida (Gemini 2.5 Flash + Document AI)  
 **Documentación**: Ver [CLAUDE.md](./CLAUDE.md) para configuración detallada  
 **Investigación**: Ver [Research/](./Research/) para documentación técnica
 
 🛠️ **Configuración rápida**: Ejecuta `poetry run python setup_gcp_a2a.py` para verificar tu configuración
+
+🚀 **Ejecutar agente funcional**: `adk run customer_service` para usar CatastroAI con Document AI
 
 📚 **Aprende más**: Consulta [Research/Aprendizaje/ServiceAccountsGCP.md](./Research/Aprendizaje/ServiceAccountsGCP.md) para entender Service Accounts

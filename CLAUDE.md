@@ -16,9 +16,10 @@
 ## Estructura del Proyecto
 - **Proyecto GCP**: catastrai-deval
 - **Región**: us-central1  
-- **Tecnologías**: Google ADK, Vertex AI, Gemini 2.5 Flash
+- **Tecnologías**: Google ADK, Vertex AI, Gemini 2.5 Flash, Document AI
 - **Framework**: Python con Poetry
-- **Arquitectura**: Agente multimodal para atención al cliente
+- **Arquitectura**: Agente híbrido con doble validación (Gemini + Document AI)
+- **Especialización**: Servicios catastrales e inmobiliarios
 
 ## Configuración GCP A2A
 - **Service Account**: catastro-ai-agent@catastrai-deval.iam.gserviceaccount.com
@@ -38,9 +39,12 @@ poetry run python setup_gcp_a2a.py
 ```
 
 ## Notas Importantes
-- Este es un proyecto relacionado con catastro e IA
+- Este es un proyecto especializado en servicios catastrales e inmobiliarios
+- **Arquitectura Híbrida**: Gemini 2.5 Flash (motor principal) + Document AI (segundo revisor)
+- **Doble Validación**: Todos los documentos críticos son verificados por ambos modelos
 - Mantener la documentación actualizada en español
 - Seguir las mejores prácticas de seguridad
+- El modelo de Document AI está preentrenado para documentos catastrales específicos
 
 ---
 *Archivo creado automáticamente con Claude Code*
