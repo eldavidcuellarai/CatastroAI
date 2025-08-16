@@ -9,17 +9,21 @@ import ProcessFlowBar from '@/components/process-flow-bar';
 import BreadcrumbNav from '@/components/breadcrumb-nav';
 import ActionBar from '@/components/action-bar';
 import DataEditorModal from '@/components/data-editor-modal';
+import TestPanel from '@/components/test-panel';
+import BackendTestPanel from '@/components/backend-test-panel';
 import { UploadedFile, ExtractorResult, FileStatus, DocumentType, ExtractedDataAI } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { saveExtractedData } from './actions/save-data';
 import ExtractorDatosIRCNL from '@/lib/extractorDatos';
 import { extractDataFromPdf } from './actions/extract-from-pdf';
+import { getSampleData, createSampleFile } from '@/lib/sampleData';
 
 export default function Home() {
   const { toast } = useToast();
 
   const [selectedDocumentType, setSelectedDocumentType] = useState<DocumentType>('propiedad');
+  const [isTestMode, setIsTestMode] = useState(false);
 
   const [files, setFiles] = useState<Record<DocumentType, UploadedFile[]>>({
     propiedad: [],
@@ -225,13 +229,75 @@ export default function Home() {
   const showUploadAnotherButton = hasExtractedData && isSaved[selectedDocumentType] && !isProcessingAnyFile;
   const showEditButton = hasExtractedData && !isSaved[selectedDocumentType] && !isProcessingAnyFile;
 
+  // Test mode functions
+  const handleToggleTestMode = () => {
+    setIsTestMode(!isTestMode);
+    toast({
+      title: isTestMode ? "Modo Normal Activado" : "Modo Prueba Activado",
+      description: isTestMode 
+        ? "Ahora usarás el sistema completo con IA real." 
+        : "Ahora puedes probar fácilmente con datos de ejemplo.",
+    });
+  };
+
+  const handleLoadSampleData = (documentType: DocumentType = selectedDocumentType) => {
+    const sampleData = getSampleData(documentType);
+    setExtractedData(prev => ({ ...prev, [documentType]: sampleData }));
+    setIsSaved(prev => ({ ...prev, [documentType]: false }));
+    
+    toast({
+      title: "Datos de Ejemplo Cargados",
+      description: `Se han cargado datos de ejemplo para ${documentType === 'propiedad' ? 'Propiedad' : 'Gravamen'}.`,
+    });
+  };
+
+  const handleLoadSampleFile = async (documentType: DocumentType = selectedDocumentType) => {
+    const sampleFile = createSampleFile(documentType);
+    await procesarArchivo(sampleFile, documentType);
+    
+    toast({
+      title: "Archivo de Prueba Cargado",
+      description: `Se ha procesado un archivo PDF de ejemplo para ${documentType === 'propiedad' ? 'Propiedad' : 'Gravamen'}.`,
+    });
+  };
+
+  const handleClearAll = () => {
+    setFiles({ propiedad: [], gravamen: [] });
+    setExtractedData({ propiedad: null, gravamen: null });
+    setErrors({ propiedad: {}, gravamen: {} });
+    setIsSaved({ propiedad: false, gravamen: false });
+    setProcessingFiles({ propiedad: new Set(), gravamen: new Set() });
+    
+    toast({
+      title: "Datos Limpiados",
+      description: "Se han eliminado todos los archivos y datos extraídos.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
+      <Header 
+        onLoadSampleData={() => handleLoadSampleData()}
+        onClearAll={handleClearAll}
+        onToggleTestMode={handleToggleTestMode}
+        isTestMode={isTestMode}
+      />
       <BreadcrumbNav />
       <main className="flex-1 p-4 md:p-8">
         <ProcessFlowBar />
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          {/* Backend Test Panel */}
+          <BackendTestPanel isVisible={isTestMode} />
+          
+          {/* Test Panel */}
+          <TestPanel
+            isTestMode={isTestMode}
+            onLoadSampleData={handleLoadSampleData}
+            onLoadSampleFile={handleLoadSampleFile}
+            extractedData={extractedData}
+            onClearAll={handleClearAll}
+          />
           <Tabs value={selectedDocumentType} onValueChange={(value) => setSelectedDocumentType(value as DocumentType)} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="propiedad">Documentos de Propiedad</TabsTrigger>
