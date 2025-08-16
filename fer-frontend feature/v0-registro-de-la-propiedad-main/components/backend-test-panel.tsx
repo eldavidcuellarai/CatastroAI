@@ -28,7 +28,7 @@ export default function BackendTestPanel({ isVisible }: BackendTestPanelProps) {
   const testBackendConnection = async () => {
     setConnectionStatus('testing');
     try {
-      const response = await fetch('https://8080-cs-default.cloudshell.dev/health', {
+      const response = await fetch('https://8080-cs-f36064f3-70e1-4a6c-9760-da09e18f7444.cs-us-east1-yeah.cloudshell.dev/health', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export default function BackendTestPanel({ isVisible }: BackendTestPanelProps) {
       formData.append('document_type', 'propiedad');
 
       const startTime = Date.now();
-      const response = await fetch('https://8080-cs-default.cloudshell.dev/extract', {
+      const response = await fetch('https://8080-cs-f36064f3-70e1-4a6c-9760-da09e18f7444.cs-us-east1-yeah.cloudshell.dev/extract', {
         method: 'POST',
         body: formData,
       });

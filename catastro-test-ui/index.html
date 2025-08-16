@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatastroAI - Test UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-8 max-w-4xl">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-lg mb-8 shadow-lg">
+            <h1 class="text-3xl font-bold flex items-center gap-3">
+                <i class="fas fa-brain"></i>
+                CatastroAI - Test Interface
+            </h1>
+            <p class="text-blue-100 mt-2">Interfaz de prueba para agente híbrido catastral</p>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                <i class="fas fa-link text-blue-600"></i>
+                Estado de Conexión
+            </h2>
+            <div class="flex items-center gap-4">
+                <button id="testConnection" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    <i class="fas fa-plug mr-2"></i>
+                    Probar Conexión
+                </button>
+                <div id="connectionStatus" class="px-3 py-1 rounded text-sm font-medium">
+                    <i class="fas fa-circle text-gray-400 mr-2"></i>
+                    No probado
+                </div>
+            </div>
+            <div id="backendInfo" class="mt-4 p-3 bg-gray-50 rounded hidden">
+                <h4 class="font-medium text-gray-700 mb-2">Información del Backend:</h4>
+                <pre id="backendDetails" class="text-sm text-gray-600"></pre>
+            </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                <i class="fas fa-file-pdf text-red-600"></i>
+                Subir Documento Catastral
+            </h2>
+            
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition">
+                <input type="file" id="fileInput" accept=".pdf" class="hidden">
+                <label for="fileInput" class="cursor-pointer">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4 block"></i>
+                    <p class="text-lg text-gray-600 mb-2">Haz clic para seleccionar un archivo PDF</p>
+                    <p class="text-sm text-gray-500">Solo archivos PDF catastrales</p>
+                </label>
+            </div>
+            
+            <div id="fileInfo" class="mt-4 hidden">
+                <div class="flex items-center gap-3 p-3 bg-blue-50 rounded">
+                    <i class="fas fa-file-pdf text-red-600"></i>
+                    <span id="fileName" class="font-medium"></span>
+                    <span id="fileSize" class="text-sm text-gray-600"></span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <label for="docType" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Documento:</label>
+                <select id="docType" class="border border-gray-300 rounded-md px-3 py-2 w-full md:w-auto">
+                    <option value="propiedad">Documento de Propiedad</option>
+                    <option value="gravamen">Documento de Gravamen</option>
+                </select>
+            </div>
+
+            <button id="processBtn" class="mt-4 bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                <i class="fas fa-cogs mr-2"></i>
+                Procesar con IA
+            </button>
+        </div>
+
+        <!-- Processing Status -->
+        <div id="processingStatus" class="bg-white p-6 rounded-lg shadow mb-6 hidden">
+            <div class="flex items-center gap-3">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                <span class="text-lg font-medium">Procesando documento con CatastroAI...</span>
+            </div>
+            <div class="mt-2 text-sm text-gray-600">
+                Usando Gemini 2.5 Flash + Document AI para extraer datos
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="bg-white p-6 rounded-lg shadow hidden">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                <i class="fas fa-chart-line text-green-600"></i>
+                Resultados de Extracción
+            </h2>
+            
+            <div id="processingMetrics" class="flex gap-4 mb-4"></div>
+            
+            <div id="extractedData" class="bg-gray-50 p-4 rounded">
+                <h4 class="font-medium text-gray-700 mb-3">Datos Extraídos:</h4>
+                <pre id="dataOutput" class="text-sm text-gray-800 whitespace-pre-wrap"></pre>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="errorDisplay" class="bg-red-50 border border-red-200 p-4 rounded-lg hidden">
+            <div class="flex items-center gap-2 text-red-800">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="font-medium">Error</span>
+            </div>
+            <p id="errorMessage" class="text-red-700 mt-1"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
