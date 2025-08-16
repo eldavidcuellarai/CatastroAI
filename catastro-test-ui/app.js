@@ -1,5 +1,5 @@
 // CatastroAI Test UI - JavaScript
-const BACKEND_URL = 'https://8080-cs-f36064f3-70e1-4a6c-9760-da09e18f7444.cs-us-east1-yeah.cloudshell.dev';
+const BACKEND_URL = 'https://8080-cs-XXXXXX-default.cloudshell.dev'; // Reemplazar con URL exacta del Web Preview
 
 class CatastroTestUI {
     constructor() {
@@ -38,25 +38,92 @@ class CatastroTestUI {
         this.setConnectionStatus('testing', 'Probando...', 'text-yellow-600');
         this.hideError();
 
+        // Verificar URL del backend
+        console.log('🔗 Intentando conectar a:', BACKEND_URL);
+        
         try {
+            // Primer diagnóstico: verificar si la URL es válida
+            if (!BACKEND_URL || !BACKEND_URL.startsWith('http')) {
+                throw new Error('URL del backend no válida. Verifica BACKEND_URL en app.js');
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
+
             const response = await fetch(`${BACKEND_URL}/health`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (response.ok) {
                 const data = await response.json();
                 this.setConnectionStatus('connected', 'Conectado', 'text-green-600');
                 this.showBackendInfo(data);
+                console.log('✅ Conexión exitosa:', data);
             } else {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                // Diagnóstico detallado de errores HTTP
+                let errorDetail = `HTTP ${response.status}: ${response.statusText}`;
+                
+                if (response.status === 404) {
+                    errorDetail += '\n🔍 Diagnóstico: El endpoint /health no existe. ¿Está corriendo el backend?';
+                } else if (response.status === 403) {
+                    errorDetail += '\n🔍 Diagnóstico: Acceso denegado. Verifica permisos CORS.';
+                } else if (response.status === 500) {
+                    errorDetail += '\n🔍 Diagnóstico: Error interno del servidor. Revisa logs del backend.';
+                } else if (response.status >= 500) {
+                    errorDetail += '\n🔍 Diagnóstico: Error del servidor. El backend puede estar caído.';
+                }
+
+                throw new Error(errorDetail);
             }
         } catch (error) {
             this.setConnectionStatus('error', 'Error de Conexión', 'text-red-600');
-            this.showError(`Error conectando con backend: ${error.message}`);
+            
+            // Diagnóstico específico por tipo de error
+            let diagnosticMessage = '';
+            
+            if (error.name === 'AbortError') {
+                diagnosticMessage = 'Timeout: El backend no responde en 10 segundos.\n🔍 Verifica que el servidor esté corriendo en Cloud Shell.';
+            } else if (error.message.includes('Failed to fetch')) {
+                diagnosticMessage = 'No se puede conectar al backend.\n🔍 Posibles causas:\n' +
+                    '• El backend no está corriendo\n' +
+                    '• URL incorrecta en BACKEND_URL\n' +
+                    '• Problemas de CORS\n' +
+                    '• Firewall bloqueando la conexión';
+            } else if (error.message.includes('network')) {
+                diagnosticMessage = 'Error de red.\n🔍 Verifica tu conexión a internet.';
+            } else {
+                diagnosticMessage = error.message;
+            }
+
+            this.showError(diagnosticMessage);
+            console.error('❌ Error de conexión:', error);
+            
+            // Mostrar información adicional de diagnóstico
+            this.showDiagnosticInfo();
         }
+    }
+
+    showDiagnosticInfo() {
+        const diagnosticDiv = document.createElement('div');
+        diagnosticDiv.className = 'mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg';
+        diagnosticDiv.innerHTML = `
+            <h4 class="font-medium text-yellow-800 mb-2">🛠️ Información de Diagnóstico</h4>
+            <div class="text-sm text-yellow-700 space-y-1">
+                <p><strong>URL Backend:</strong> ${BACKEND_URL}</p>
+                <p><strong>Navegador:</strong> ${navigator.userAgent.split(' ')[0]}</p>
+                <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+                <p><strong>Estado esperado:</strong> Backend corriendo en Cloud Shell puerto 8080</p>
+            </div>
+        `;
+        
+        // Agregar al final del error display
+        this.errorDisplay.appendChild(diagnosticDiv);
     }
 
     setConnectionStatus(status, text, colorClass) {
